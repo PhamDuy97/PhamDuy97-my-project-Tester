@@ -1,0 +1,57 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class DocJSon {
+
+    public static void main(String[] args) throws InterruptedException, IOException, ParseException {
+        // Thiết lập đường dẫn của trình duyệt Chrome
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+
+        // Khởi tạo trình duyệt Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Mở cửa sổ trình duyệt và phóng to toàn màn hình
+        driver.manage().window().maximize();
+
+        // Mở trang web đăng nhập
+        driver.get("http://didoshop.vn/user/signin");
+
+        // Đọc dữ liệu từ tệp JSON
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader("C:\\Users\\pduy1\\OneDrive\\Máy tính\\Login.json"));
+        JSONObject jsonObject = (JSONObject) obj;
+
+        // Lấy thông tin đăng nhập từ JSON
+        String email = (String) jsonObject.get("email");
+        String password = (String) jsonObject.get("password");
+
+        // Nhập thông tin đăng nhập từ JSON vào các trường tương ứng trên trang web
+        driver.findElement(By.name("email")).sendKeys(email);
+        Thread.sleep(2000); // Đợi 2 giây để chắc chắn rằng trường email đã được điền
+        driver.findElement(By.name("password")).sendKeys(password);
+        Thread.sleep(2000); // Đợi 2 giây để chắc chắn rằng trường password đã được điền
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.id("btnSubmit")).click();
+
+        // Kiểm tra đăng nhập thành công
+        String currentURL = driver.getCurrentUrl();
+        if (currentURL.equals("http://didoshop.vn/")) {
+            System.out.println("Đăng nhập thành công!");
+        } else {
+            System.out.println("Đăng nhập thất bại!");
+        }
+
+        // Đóng trình duyệt
+        driver.quit();
+    }
+}

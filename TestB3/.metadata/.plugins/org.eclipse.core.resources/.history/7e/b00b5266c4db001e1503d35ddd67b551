@@ -1,0 +1,20 @@
+package BaiTH5;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+ 
+public  class Baitap1 {
+	public static void main(String[] args) {
+		System.setProperty("webdrive.chrome.driver","D:\\chromedriver.exe");
+		WebDriver driver = new  ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://demo.guru99.com/test/web-table-element.php#");
+		
+		String sCellValue = driver.findElement(By.xpath("//*[@id=\"leftcontainer\"]/table/tbody/tr[5]/td[4]")).getText();
+		System.out.println(sCellValue);
+		
+		
+		driver.findElement(By.xpath("//*[@id=\"leftcontainer\"]/table/tbody/tr[5]/td[4]")).click();
+	}
+}

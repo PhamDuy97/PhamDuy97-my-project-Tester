@@ -1,0 +1,93 @@
+package TestNG;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.DataProvider;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+
+public class DocFileExel {
+
+    private WebDriver driver;
+
+    @Test(dataProvider = "dp")
+    public void f(String username, String password) throws InterruptedException {
+        driver.navigate().to("http://didoshop.vn/user/signin");
+
+        driver.findElement(By.id("username")).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.id("btnSubmit")).click();
+
+        // Implement explicit wait instead of Thread.sleep (replace with appropriate wait condition and action)
+        // Thread.sleep(2000); // Replace with explicit wait for better synchronization
+    }
+
+    @BeforeMethod
+    public void beforeMethod() {
+        System.out.println("Bắt đầu");
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe"); // Replace with your path
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        driver.quit();
+    }
+
+    @DataProvider(name = "dp")
+    public Object[][] dp() {
+        Object[][] arrObj = getExelData("C:\\Users\\pduy1\\OneDrive\\Máy tính\\paramentTim.xlsx", "Data");
+        return arrObj;
+    }
+
+    private Object[][] getExelData(String fileName, String sheetName) {
+        String[][] data = null;
+
+        try (FileInputStream fis = new FileInputStream(fileName);
+             XSSFWorkbook workbook = new XSSFWorkbook(fis)) { // Use AutoCloseable
+
+            XSSFSheet sheet = workbook.getSheet(sheetName);
+
+            if (sheet == null) {
+                throw new RuntimeException("Sheet " + sheetName + " không tồn tại!");
+            }
+
+            int soDong = sheet.getPhysicalNumberOfRows();
+            if (soDong == 0) {
+                throw new RuntimeException("Không có dữ liệu trong sheet!");
+            }
+
+            int soCot = sheet.getRow(0).getLastCellNum();
+
+            XSSFCell cell;
+            data = new String[soDong - 1][soCot];
+
+            for (int i = 1; i < soDong; i++) {
+                XSSFRow row = sheet.getRow(i);
+
+                for (int j = 0; j < soCot; j++) {
+                    cell = row.getCell(j);
+                    if (cell != null) {
+                        data[i - 1][j] = cell.getStringCellValue();
+                    } else {
+                        data[i - 1][j] = ""; // Xử lý ô trống
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi đọc file Excel: " + e.getMessage());
+        }
+        return data;
+    }
+}

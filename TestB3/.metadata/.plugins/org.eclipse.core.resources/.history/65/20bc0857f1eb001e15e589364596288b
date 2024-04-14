@@ -1,0 +1,30 @@
+package BaiTH8;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybribBinarizer;
+
+public class Cau2 {
+	@Test
+
+	public void ReadBArCod() throws Exception {
+		// TODO Auto-generated method stub
+		BufferedImage bufferedImage =ImageIO.read(new File("");)
+		LuminanceSource source = new BufferedImageLuminanceSource (bufferedImage);
+		BinaryBitmap bitmap = new BinaryBitmap ( new HybribBinarizer (source));
+		Result result = new MultiFormatReader().decode(bitmap);
+		System.out.println("Noi dung giai ma dc la: "+ result.getText);
+		AssertJUnit.assertEquals("PLT SOLUTION- AUTOMATION", result.getText());
+	}
+
+}

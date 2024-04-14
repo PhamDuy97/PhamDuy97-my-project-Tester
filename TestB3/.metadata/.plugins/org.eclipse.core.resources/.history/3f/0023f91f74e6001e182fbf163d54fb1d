@@ -1,0 +1,48 @@
+package BaiTH7;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+public class BaiTap3 {
+
+    public void readFromJson() throws IOException, ParseException {
+        FileReader reader = new FileReader("C:\\Users\\pduy1\\OneDrive\\Máy tính\\employee.json");
+        JSONParser jsonparser = new JSONParser();
+        
+        Object obj = jsonparser.parse(reader);
+        
+        JSONObject empjsonobj = (JSONObject) obj;
+        
+        String fname= (String) empjsonobj.get("firstName");
+        String lname= (String) empjsonobj.get("lastName");
+        System.out.println("First Name:"+ fname );
+        System.out.println("Last Name:"+ lname );
+
+        JSONArray array = (JSONArray) empjsonobj.get("address");
+        for (int i=0; i< array.size(); i++) {
+            JSONObject address= (JSONObject) array.get(i);
+            String street= (String) address.get("street");
+            String city= (String) address.get("city");
+            String province= (String) address.get("province");
+            
+            System.out.println("Address of "+i+" is...");
+            System.out.println("Street:"+ street );
+            System.out.println("City:"+ city );
+            System.out.println("Province:"+ province);
+        }
+    }
+
+    public static void main(String[] args) {
+        BaiTap3 baiTap3 = new BaiTap3();
+        try {
+            baiTap3.readFromJson();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+}

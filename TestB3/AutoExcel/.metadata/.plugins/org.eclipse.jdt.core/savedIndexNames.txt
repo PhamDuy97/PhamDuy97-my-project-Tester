@@ -1,0 +1,1 @@
+INDEX VERSION 1.131+D:\KTTD\TestScripts_AnhNinhPhuHieu_01_AutoTest_Version1.1\.metadata\.plugins\org.eclipse.jdt.core

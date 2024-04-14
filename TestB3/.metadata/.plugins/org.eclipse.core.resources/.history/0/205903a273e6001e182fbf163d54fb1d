@@ -1,0 +1,44 @@
+package BaiTH7;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class BaiTap2 {
+	public static XSSFRow row;
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		FileInputStream fis= new FileInputStream ("D:\\KTDD_Thực Hành\\Test.xlsx");
+		XSSFWorkbook book = new XSSFWorkbook(fis);
+
+		XSSFSheet sheet1 = book.getSheet("Data");
+
+		String [][]dulieu= new String[][] {{"Facebook", "Google","Zalo","Yahoo","TCD","PLT","Tuấn Trần"},
+			{"Nhựt lâm","Hồng Tư","Xuân Hiếu","Hiền Lê","Phan Gia Phước","Thầy Thọ","Thầy Thái"},
+			{"Cty A","Cty B","Cty C","Cty D","Cty PLT","Cty F","Cty G"},
+			{"Quách Tĩnh","Hồng thất Công","Hoàng Dung","Hoàng Dược Sư","Dương Khang","Châu Bá Thông","Chu Du"},
+				{"Khổng Minh","Lưu Bị","Tào Tháo","Triệu Vân","Trương Phi","Tôn Quyền","Hoàng Trung"},
+				{"Vân Tương","Vân Tịch","Tiêu Hà","Hàn Tín","Phàn Khoái","Lưu Bá Ôn","Tiêu Tường"}};
+
+				for (int dong=0; dong< dulieu.length;dong++) {
+				row = sheet1.createRow(dong);
+
+				for (int i=0; i< dulieu[dong].length;i++) {
+				XSSFCell cell= row.createCell(i);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(dulieu[dong][i].toString());
+		}
+	}
+	FileOutputStream fos= new FileOutputStream("D:\\KTDD_Thực Hành\\Test.xlsx");
+	book.write(fos);
+	book.close();
+	fos.close();
+	}
+}

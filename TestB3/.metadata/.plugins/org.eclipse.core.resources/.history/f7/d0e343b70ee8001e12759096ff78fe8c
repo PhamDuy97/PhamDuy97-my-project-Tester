@@ -1,0 +1,70 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DangNhapThanhCong {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Thiết lập đường dẫn của trình duyệt Chrome
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+
+        // Khởi tạo trình duyệt Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Mở cửa sổ trình duyệt và phóng to toàn màn hình
+        driver.manage().window().maximize();
+
+        // Mở trang web
+        driver.get("http://didoshop.vn/");
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.className("btnSignin")).click();
+
+        // Nhập thông tin đăng nhập
+        driver.findElement(By.id("username")).sendKeys("phamdyyuu0907@gmail.com");
+        Thread.sleep(2000);
+        driver.findElement(By.id("password")).sendKeys("phamduy0907");
+        Thread.sleep(2000);
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.id("btnSubmit")).click();
+
+        // Kiểm tra đăng nhập thành công
+        String currentURL = driver.getCurrentUrl();
+        if (currentURL.equals("http://didoshop.vn/")) {
+            System.out.println("Đăng nhập thành công!");
+
+            // Kiểm tra kết quả
+            List<String> expect_result = new ArrayList<>();
+            expect_result.add("Option1");
+            expect_result.add("Option2");
+            	// Thay bằng kết quả mong đợi thực tế
+
+         // Lấy phần tử chứa thông tin đăng nhập thành công
+            WebElement actualSignup = driver.findElement(By.xpath("//p[contains(text(), 'Xin chào, Phạm Hoàng Duy')]"));
+
+            // Lấy văn bản của phần tử
+            String actualText = actualSignup.getText();
+
+            // So sánh với kết quả mong đợi
+            String expectedText = "Xin chào, Phạm Hoàng Duy";
+            if (actualText.contains(expectedText)) {
+                System.out.println("Thông tin đăng nhập thành công chính xác!");
+            } else {
+                System.out.println("Thông tin đăng nhập không chính xác!");
+            }
+        } else {
+            System.out.println("Đăng nhập thất bại!");
+        }
+
+        // Đóng trình duyệt
+        driver.quit();
+    }
+}

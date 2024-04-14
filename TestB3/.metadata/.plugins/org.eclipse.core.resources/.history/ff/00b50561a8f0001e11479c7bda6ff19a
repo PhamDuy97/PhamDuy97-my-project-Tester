@@ -1,0 +1,83 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class DocJSon {
+
+    @Test(dataProvider = "dataProvider")
+    public void loginTest(String email, String password) throws InterruptedException {
+        // Thiết lập đường dẫn của trình duyệt Chrome
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+
+        // Khởi tạo trình duyệt Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Mở cửa sổ trình duyệt và phóng to toàn màn hình
+        driver.manage().window().maximize();
+
+        // Mở trang web đăng nhập
+        driver.get("http://didoshop.vn/user/signin");
+
+        // Nhập thông tin đăng nhập từ JSON vào các trường tương ứng trên trang web
+        driver.findElement(By.name("email")).clear();
+        driver.findElement(By.name("email")).sendKeys(email);
+        Thread.sleep(2000); // Đợi 2 giây để chắc chắn rằng trường email đã được điền
+        driver.findElement(By.name("password")).clear();
+        driver.findElement(By.name("password")).sendKeys(password);
+        Thread.sleep(2000); // Đợi 2 giây để chắc chắn rằng trường password đã được điền
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.id("btnSubmit")).click();
+        String act_title = driver.getTitle();
+        String exp_title = "Your store. Login";
+        Thread.sleep(1000);
+        AssertJUnit.assertEquals(act_title, exp_title);
+
+        // Kiểm tra đăng nhập thành công
+        String currentURL = driver.getCurrentUrl();
+        if (currentURL.equals("http://didoshop.vn/")) {
+            System.out.println("Đăng nhập thành công với email: " + email + " và password: " + password);
+        } else {
+            System.out.println("Đăng nhập thất bại với email: " + email + " và password: " + password);
+        }
+
+        // Đóng trình duyệt
+        driver.quit();
+    }
+
+    @DataProvider(name = "dataProvider")
+    public Object[][] getData() throws IOException, ParseException {
+        // Đọc dữ liệu từ tệp JSON
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader("C:\\Users\\pduy1\\OneDrive\\Máy tính\\Login.json"));
+        JSONObject jsonObject = (JSONObject) obj;
+        JSONArray userlogins = (JSONArray) jsonObject.get("userlogins");
+
+        // Tạo mảng 2 chiều để chứa dữ liệu đăng nhập
+        Object[][] data = new Object[userlogins.size()][2];
+
+        // Lặp qua mỗi đối tượng JSON trong mảng userlogins và thêm dữ liệu vào mảng data
+        for (int i = 0; i < userlogins.size(); i++) {
+            JSONObject user = (JSONObject) userlogins.get(i);
+            String email = (String) user.get("username");
+            String password = (String) user.get("password");
+            data[i][0] = email;
+            data[i][1] = password;
+        }
+
+        return data;
+    }
+}

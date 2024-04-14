@@ -1,0 +1,31 @@
+package Bt1;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class C7 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "c:\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://www.selenium.dev/");
+		Thread.sleep(2000);
+		driver.navigate().to("https://www.selenium.dev/documentation/webdriver/interactions");		
+		Thread.sleep(2000);
+		
+		String dinhdanh = driver.getWindowHandle();
+		System.out.println(dinhdanh);
+		System.out.println(driver.getCurrentUrl());
+		
+		driver.navigate().back();
+		Thread.sleep(2000);
+		
+		driver.navigate().forward();
+		Thread.sleep(2000);
+		driver.navigate().refresh();
+		Thread.sleep(1000);
+		System.out.println(driver.getTitle());
+		
+		driver.quit();
+	}

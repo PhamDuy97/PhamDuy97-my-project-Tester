@@ -1,0 +1,34 @@
+package DangNhap;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Thao2 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.navigate().to("http://didoshop.vn/");
+// Tìm phần ô nhập liệu tìm kiếm bằng tên lớp CSS và nhập từ khóa tìm kiếm
+driver.findElement(By.cssSelector("input[name='q']")).sendKeys("xyzzz123456789"); //Từ khóa không tồn tại
+// Nhấn Enter
+driver.findElement(By.cssSelector("input[name='q']")).sendKeys(Keys.RETURN);
+// Chờ 3 giây để trang tìm kiếm được tải
+try {
+      Thread.sleep(3000);
+} catch (InterruptedException e) {
+      	e.printStackTrace();
+}
+
+// Kiểm tra xem có thông báo không tìm thấy kết quả hay không
+        if (!driver.getTitle().contains("xyzzz123456789")) {
+            throw new AssertionError("Kết quả tìm kiếm không chứa từ khóa ' xyzzz123456789'");
+        }
+// Đóng trình duyệt
+driver.close();
+	}
+
+}

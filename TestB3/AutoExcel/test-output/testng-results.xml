@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-04-07T22:50:05 ICT" name="Default suite" finished-at="2024-04-07T22:51:29 ICT" duration-ms="83584">
+    <groups>
+    </groups>
+    <test started-at="2024-04-07T22:50:05 ICT" name="Default test" finished-at="2024-04-07T22:51:29 ICT" duration-ms="83584">
+      <class name="TestScripts.Excel">
+        <test-method is-config="true" signature="beforeMethod()[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:50:12 ICT" name="beforeMethod" finished-at="2024-04-07T22:50:19 ICT" duration-ms="6599" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="f(java.lang.String,java.lang.String)[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:50:19 ICT" name="f" data-provider="dp" finished-at="2024-04-07T22:50:35 ICT" duration-ms="16364" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[phamdyyuu0907@gmail.com]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[phamduy0907]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- f -->
+        <test-method is-config="true" signature="afterMethod()[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:50:35 ICT" name="afterMethod" finished-at="2024-04-07T22:50:38 ICT" duration-ms="3230" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method is-config="true" signature="beforeMethod()[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:50:38 ICT" name="beforeMethod" finished-at="2024-04-07T22:50:43 ICT" duration-ms="4218" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="f(java.lang.String,java.lang.String)[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:50:43 ICT" name="f" data-provider="dp" finished-at="2024-04-07T22:51:01 ICT" duration-ms="18085" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[phamdyyuu0907@gmail.com]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[phamduy0907]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- f -->
+        <test-method is-config="true" signature="afterMethod()[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:51:01 ICT" name="afterMethod" finished-at="2024-04-07T22:51:03 ICT" duration-ms="2368" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method is-config="true" signature="beforeMethod()[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:51:03 ICT" name="beforeMethod" finished-at="2024-04-07T22:51:10 ICT" duration-ms="7034" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method signature="f(java.lang.String,java.lang.String)[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:51:10 ICT" name="f" data-provider="dp" finished-at="2024-04-07T22:51:27 ICT" duration-ms="17218" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[phamdyyuu0907@gmail.com]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[phamduy09077]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- f -->
+        <test-method is-config="true" signature="afterMethod()[pri:0, instance:TestScripts.Excel@1750fbeb]" started-at="2024-04-07T22:51:27 ICT" name="afterMethod" finished-at="2024-04-07T22:51:29 ICT" duration-ms="1334" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+      </class> <!-- TestScripts.Excel -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

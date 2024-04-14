@@ -1,0 +1,65 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class Full {
+
+    private static final String TEST_ACCOUNT_EMAIL = "phamdyyuu0907@gmail.com";
+    private static final String TEST_ACCOUNT_PASSWORD = "phamduy0907";
+
+    public static void main(String[] args) {
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("http://didoshop.vn/");
+
+        // Test 1: Đăng nhập thành công
+        dangNhap(driver, TEST_ACCOUNT_EMAIL, TEST_ACCOUNT_PASSWORD, By.id("user-profile"));
+
+        // Test 2: Email không hợp lệ
+        dangNhap(driver, "invalid@email.com", TEST_ACCOUNT_PASSWORD, By.className("errors"));
+
+        // Test 3: Thiếu email
+        dangNhap(driver, "", TEST_ACCOUNT_PASSWORD, By.className("errors"));
+
+        // Test 4: Thiếu mật khẩu
+        dangNhap(driver, TEST_ACCOUNT_EMAIL, "", By.className("errors"));
+
+        driver.quit();
+    }
+
+    private static void dangNhap(WebDriver driver, String email, String password, By expectedLocator) {
+        // Nhấp nút đăng nhập
+        driver.findElement(By.className("btnSignin")).click();
+
+        // Nhập email và mật khẩu
+        driver.findElement(By.id("username")).sendKeys(email);
+        driver.findElement(By.id("password")).sendKeys(password);
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.id("btnSubmit")).click();
+
+        // Chờ đợi element xác nhận đăng nhập xuất hiện
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(expectedLocator));
+
+        // Xác minh kết quả
+        String expectedText = "";
+        if (expectedLocator == By.id("user-profile")) {
+            expectedText = "Đăng nhập thành công!";
+        } else {
+            expectedText = "Đăng nhập thất bại!";
+        }
+
+        String actualText = driver.findElement(expectedLocator).getText();
+        if (actualText.equals(expectedText)) {
+            System.out.println("Kết quả: " + expectedText);
+        } else {
+            System.out.println("Kết quả không mong muốn: " + actualText);
+        }
+    }
+}

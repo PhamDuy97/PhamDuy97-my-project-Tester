@@ -1,0 +1,69 @@
+package BaiTH8;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import bsh.ParseException;
+
+public class Cau1 {
+
+    WebDriver driver;
+
+    @Test(dataProvider="dp")
+    public void Login(String data) throws Exception {
+        String users[] = data.split(",");
+        driver.get("https://admin-demo.nopcommerce.com/");
+        driver.findElement(By.id("Email")).clear();
+        driver.findElement(By.id("Email")).sendKeys(users[0]);
+        Thread.sleep(1000);
+        driver.findElement(By.id("Password")).clear();
+        driver.findElement(By.id("Password")).sendKeys(users[1]);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[normalize-space()='Log in']")).click();
+        String act_title = driver.getTitle();
+        String exp_title = "Your store. Login";
+        Thread.sleep(1000);
+        AssertJUnit.assertEquals(act_title, exp_title);
+    }
+
+    @DataProvider(name="dp")
+    String [] readJson() throws IOException, ParseException, org.json.simple.parser.ParseException {
+        JSONParser jsonparser = new JSONParser();
+        FileReader reader = new FileReader("D:\\KTDD_Thực Hành\\testdata.json");
+        Object obj = jsonparser.parse(reader);
+        JSONObject userloginsJsonobj = (JSONObject) obj;
+        JSONArray userloginArray = (JSONArray) userloginsJsonobj.get("userlogins");
+        String arr[] = new String[userloginArray.size()];
+        for (int i = 0; i < userloginArray.size(); i++) {
+            JSONObject users = (JSONObject) userloginArray.get(i);
+            String user = (String) users.get("username");
+            String pwd = (String) users.get("password");
+            arr[i] = user + "," + pwd;
+        }
+        return arr;
+    }
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.close();
+    }
+}

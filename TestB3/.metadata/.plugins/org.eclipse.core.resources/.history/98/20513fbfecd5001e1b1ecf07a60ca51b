@@ -1,0 +1,58 @@
+package TH4;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class Bai4 {
+
+	public static void main(String[] args) throws InterruptedException  {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "c:\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.navigate().to("https://chercher.tech/practice/dropdowns");
+		
+		//Ket qua mong doi
+		List<String>expect_result= Arrays.asList(new String[] {"Bing","Google","Iphone 14","Yahoo"});
+		
+//		Ket qua thuc te
+		WebElement ActualDropdown= driver.findElement(By.id("oder-same"));
+		Select actual= new Select(ActualDropdown);
+		ActualDropdown.click();
+		
+		List<WebElement> actualListElements=actual.getOptions();
+		
+		List<String> actual_result=new ArrayList<String>();
+		
+		for(WebElement option: actualListElements) {
+			actual_result.add(option.getText());
+		}
+		if((expect_result).equals(actual_result)) {
+			System.out.println("Ket qua thuc te dung voi mong doi");	
+		}
+		else {
+			System.out.println("Ket qua thuc te khac key qua mong doi");
+			
+			System.out.println("Ket qua mong doi:"+ expect_result.toString());
+			System.out.println("Ket qua thuc te:"+ actual_result.toString());
+		}
+//		Kiem tra gia tri mac dinh cua DropDown
+		
+		String default_value_expect="Samsung";
+		if (actual.getFirstSelectedOption().getText().equals(default_value_expect)) {
+		    System.out.println("Gia tri mac dinh cua DropDown List dung - PASS");
+		} else {
+		    System.out.println("Gia tri mac dinh cua DropDown List sai- FAIL");
+		    System.out.println("Ket qua mong doi:" + default_value_expect);
+		    System.out.println("Ket qua thuc te:" + actual.getFirstSelectedOption().getText());
+		}
+		driver.close();
+		}
+	}
+

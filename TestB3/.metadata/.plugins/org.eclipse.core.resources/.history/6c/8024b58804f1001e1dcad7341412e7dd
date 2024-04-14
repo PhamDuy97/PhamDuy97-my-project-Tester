@@ -1,0 +1,102 @@
+package TestScripts;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.NoAlertPresentException;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.io.FileInputStream;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class dy {
+    String driverPath = "C:\\KoDau\\chromedriver.exe";
+    public WebDriver driver;
+
+    @Test(dataProvider = "dp")
+    public void f(String keyWord1, String keyWord2) throws InterruptedException {
+        String url = "http://didoshop.vn/";
+        driver.get(url);
+        driver.findElement(By.className("btnSignin")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.id("username")).sendKeys(keyWord1);
+        Thread.sleep(1000);
+        driver.findElement(By.id("password")).sendKeys(keyWord2);
+        Thread.sleep(1000);
+        driver.findElement(By.id("btnSubmit")).click();
+        
+        try {
+            // Đợi 2 giây để xem liệu cửa sổ cảnh báo có xuất hiện không
+            Thread.sleep(2000);
+            // Nếu cửa sổ cảnh báo tồn tại, xác nhận nó và tiếp tục
+            driver.switchTo().alert().accept();
+        } catch (NoAlertPresentException e) {
+            // Nếu không có cửa sổ cảnh báo xuất hiện, tiếp tục thực hiện các thao tác tiếp theo
+        }
+        
+        // Tiếp tục thực hiện các thao tác khác sau khi đăng nhập
+        // ...
+    }
+
+    @BeforeMethod
+    public void beforeMethod() {
+        System.out.print("Bat dau test");
+        String driverPath = "C:\\KoDau\\chromedriver.exe";
+        System.setProperty("webdriver.chrome.driver", driverPath);
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        driver.close();
+    }
+
+    @DataProvider(name = "dp")
+    public Object[][] dp() {
+        Object[][] arrObj = getExcelData("D:\\dangnhap.xlsx", "Sheet1");
+        return arrObj;
+    }
+
+    private Object[][] getExcelData(String fileName, String sheetName) {
+        Object[][] data = null;
+
+        try {
+            FileInputStream fis = new FileInputStream(fileName);
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheet(sheetName);
+
+            int numRows = sheet.getPhysicalNumberOfRows();
+            int numCols = sheet.getRow(0).getLastCellNum();
+
+            data = new Object[numRows - 1][numCols];
+
+            for (int i = 1; i < numRows; i++) {
+                XSSFRow row = sheet.getRow(i);
+                for (int j = 0; j < numCols; j++) {
+                    XSSFCell cell = row.getCell(j);
+                    if (cell != null) {
+                        if (j == 1) { // Kiểm tra cột 2
+                            data[i - 1][j] = (int) cell.getNumericCellValue();
+                        } else {
+                            data[i - 1][j] = cell.getStringCellValue();
+                        }
+                    }
+                }
+            }
+
+            workbook.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+}

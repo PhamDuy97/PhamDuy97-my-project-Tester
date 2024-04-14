@@ -1,0 +1,61 @@
+package Dangky;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterMethod;
+
+public class pom_Test1 {
+    private WebDriver driver;
+    private POM_Signup signup;
+
+    @Test  
+    public void testRegister() throws InterruptedException {
+        driver.findElement(By.className("btnSignin")).click();
+
+        signup.enterEmail("phamdyyuu0907@gmail.com");
+        signup.enterPassword("phamduy0907");
+
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+
+        // Kiểm tra đăng nhập thành công
+        String currentURL = driver.getCurrentUrl();
+        if (currentURL.equals("http://didoshop.vn/")) {
+            System.out.println("Đăng nhập thành công!");
+
+            // Kiểm tra kết quả
+            String expect_result = "http://didoshop.vn/";
+            String actual_result = currentURL;
+
+            if (expect_result.equals(actual_result)) {
+                System.out.println("Kết quả thực tế đúng với kết quả mong đợi");
+            } else {
+                System.out.println("Kết quả thực tế khác kết quả mong đợi");
+                System.out.println("Kết quả mong đợi: " + expect_result);
+                System.out.println("Kết quả thực tế: " + actual_result);
+            }
+        } else {
+            System.out.println("Đăng nhập thất bại!");
+        }
+    }
+
+    @BeforeMethod
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+        driver = new ChromeDriver();
+        signup = new POM_Signup(driver); 
+        driver.get("http://didoshop.vn/");
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        try {
+            driver.quit();
+        } catch (Exception e) {
+            System.out.println("Không thể kết thúc trình duyệt: " + e.getMessage());
+        }
+    }
+}

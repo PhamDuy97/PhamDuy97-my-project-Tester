@@ -1,0 +1,76 @@
+package BaiTH5;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class Cau3 {
+
+	public static void main(String[] args) throws InterruptedException, AWTException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\HK2-N3\\Auto Test\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://demoqa.com/text-box");
+		
+		Actions actions = new Actions(driver);
+		Robot robot = new Robot();
+		WebElement fullName = driver.findElement(By.id("userName"));
+		fullName.sendKeys("Mr.PHUOC PHAN");
+		
+		WebElement email = driver.findElement(By.id("userEmail"));
+		email.sendKeys("pltsolution3010@gmail.com");
+		
+		System.out.println("About to zoom in");
+		for (int i = 0; i < 5; i++) {
+			robot.keyPress(KeyEvent.VK_CONTROL);
+			robot.keyPress(KeyEvent.VK_ADD);
+			robot.keyRelease(KeyEvent.VK_ADD);
+			robot.keyRelease(KeyEvent. VK_CONTROL);
+
+		}
+		
+		System.out.println("About to zoom out");
+		for (int i = 0; i < 4; i++) {
+			robot.keyPress(KeyEvent.VK_CONTROL);
+			robot.keyPress(KeyEvent.VK_SUBTRACT);
+			robot.keyRelease(KeyEvent.VK_SUBTRACT);
+			robot.keyRelease(KeyEvent. VK_CONTROL);
+		}
+		WebElement currentAddress = driver.findElement(By.id("currentAddress"));
+		currentAddress.sendKeys("T39 đường 14, Vĩnh Phú, Thuận An, Bình Dương");
+		
+		actions.keyDown(Keys.CONTROL);
+		actions.sendKeys("a");
+		actions.keyUp(Keys.CONTROL);
+		actions.build().perform();
+		
+		actions.keyDown(Keys.CONTROL);
+		actions.sendKeys("c");
+		actions.keyUp(Keys.CONTROL);
+		actions.build().perform();
+		
+		actions.sendKeys(Keys.TAB);
+		actions.build().perform();
+		
+		actions.keyDown(Keys.CONTROL);
+		actions.sendKeys("v");
+		actions.keyUp(Keys.CONTROL);
+		actions.build().perform();
+
+		WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
+		if (currentAddress.getAttribute("value").equals(permanentAddress.getAttribute("value"))) {
+			System.out.println("PASS");
+		}
+
+	driver.close();
+	}
+
+}

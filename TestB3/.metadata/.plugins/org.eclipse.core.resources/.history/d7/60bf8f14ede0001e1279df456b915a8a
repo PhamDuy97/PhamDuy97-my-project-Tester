@@ -1,0 +1,48 @@
+package BaiTH6;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Cau2 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://demo.guru99.com/test/radio.html");
+		WebElement radio1 = driver.findElement(By.id("vfb-7-1"));
+		WebElement radio2 = driver.findElement(By.id("vfb-7-2"));
+		//Radio Buttoni is selected radio1.click();
+		radio1.click();
+		Thread.sleep(2000);
+		System.out.println("Radio Button Option 1 Selected");
+		//Radio Buttoni is de-selected and Radio Button2 is selected 
+		radio2.click();
+		System.out.println("Radio Button Option 2 Selected");
+		Thread.sleep (2000);
+		// Selecting CheckBox
+		WebElement option1 = driver.findElement(By.id("vfb-7-1"));
+		WebElement option3 = driver.findElement (By.id("vfb-7-3"));
+
+		// This will Togale the Check box
+		option1.click();
+		Thread.sleep(2029);
+		option3.click();
+		Thread.sleep (2000); 
+		option3.click();
+		Thread.sleep (2000);
+		option1.click();
+		Thread. sleep(2008); 
+		option3.click();
+		// Check whether the Check box is toggled on
+		if (option1.isSelected() && option3.isSelected() ) {
+			System.out.println("2 Checkbox is Toggled Gn");
+		} else {
+			System.out.println("1 in 2 Checkbox is Toggled Off");
+		}
+		driver.quit();
+	}
+
+}

@@ -1,0 +1,52 @@
+package BaiTH7;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import com.google.gson.stream.JsonReader;
+
+public class BaiTap4 {
+
+    public void readJSONFromAPI() throws IOException {
+        URL url = new URL("https://jsonplaceholder.typicode.com/posts");
+        InputStreamReader readerStream = new InputStreamReader(url.openStream());
+
+        try (JsonReader reader = new JsonReader(readerStream)) {
+            reader.beginArray();
+
+            while (reader.hasNext()) {
+                reader.beginObject();
+
+                while (reader.hasNext()) {
+                    String name = reader.nextName();
+                    if (name.equals("userId")) {
+                        System.out.println(reader.nextInt());
+                    } else if (name.equals("id")) {
+                        System.out.println(reader.nextInt());
+                    } else if (name.equals("title")) {
+                        System.out.println(reader.nextString());
+                    } else if (name.equals("body")) {
+                        System.out.println(reader.nextString());
+                    }
+                }
+                reader.endObject();
+                System.out.println("--------------");
+            }
+            reader.endArray();
+
+        } catch (Exception e) {
+            // Xử lý ngoại lệ
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        BaiTap4 baiTap4 = new BaiTap4();
+        try {
+            baiTap4.readJSONFromAPI();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

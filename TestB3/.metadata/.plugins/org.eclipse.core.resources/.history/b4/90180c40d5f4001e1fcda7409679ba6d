@@ -1,0 +1,47 @@
+package POM;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class LoginPage {
+    private WebDriver driver;
+
+    // Các đối tượng By được khởi tạo
+    private By usernameField = By.id("username");
+    private By passwordField = By.id("password");
+    private By loginButton = By.id("btnSubmit");
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    // Phương thức nhập tên người dùng
+    public void enterUsername(String username) {
+        driver.findElement(usernameField).sendKeys(username);
+    }
+
+    // Phương thức nhập mật khẩu
+    public void enterPassword(String password) {
+        driver.findElement(passwordField).sendKeys(password);
+    }
+
+    // Phương thức nhấn nút đăng nhập
+    public void clickLoginButton() {
+        driver.findElement(loginButton).click();
+    }
+
+    // Phương thức kiểm tra sự hiện diện của trang đăng nhập
+    public boolean isLoginPageDisplayed() {
+        return driver.findElement(usernameField).isDisplayed() &&
+               driver.findElement(passwordField).isDisplayed() &&
+               driver.findElement(loginButton).isDisplayed();
+    }
+
+    // Phương thức kiểm tra xem thông báo lỗi có hiển thị hay không
+    public boolean isErrorMessageDisplayed() {
+        By errorMessageLocator = By.xpath("//div[@class='error-message']");
+        return driver.findElement(errorMessageLocator).isDisplayed();
+    }
+
+    // Các phương thức xử lý các trường hợp đặc biệt và xử lý ngoại lệ có thể được thêm vào ở đây
+}

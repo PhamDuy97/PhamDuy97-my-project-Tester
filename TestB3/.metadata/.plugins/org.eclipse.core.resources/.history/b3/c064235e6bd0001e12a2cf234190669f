@@ -1,0 +1,38 @@
+package TH3;
+
+import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class C1 {
+
+    public String baseUrl = "https://pltpro.net";
+    String driverPath = "c:\\chromedriver.exe";
+    public WebDriver driver;
+
+    @BeforeTest
+    public void launchBrowser() throws InterruptedException {
+        System.out.println("Chạy Trình Duyệt Chrome");
+        System.setProperty("webdriver.chrome.driver", driverPath);
+        driver = new ChromeDriver();
+        driver.get(baseUrl);
+        driver.manage().window().maximize();
+        Thread.sleep(2000);
+    }
+
+    @Test
+    public void KiemThuSoSanhTieuDe() {
+        String expectedTitle = "PLT Solutions (Panda Laptop 1)"; // Sửa lại tiêu đề mong đợi
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals(actualTitle, expectedTitle);
+        System.out.println("Hai Tiêu Đề Mong Đợi Và Thực Tế: " + actualTitle); // Thêm in ra để kiểm tra
+    }
+
+    @AfterTest
+    public void terminateBrowser() {
+        driver.close();
+    }
+}

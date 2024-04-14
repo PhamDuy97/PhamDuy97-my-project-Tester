@@ -1,0 +1,75 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TestJson {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Thiết lập đường dẫn của trình duyệt ChromeDriver cho phiên bản Chrome 122
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+
+        // Khởi tạo trình duyệt Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Mở cửa sổ trình duyệt và phóng to toàn màn hình
+        driver.manage().window().maximize();
+
+        // Mở trang web đăng nhập
+        driver.get("http://didoshop.vn/user/signin");
+
+        // Đọc dữ liệu từ tệp JSON
+        JSONParser parser = new JSONParser();
+        try {
+            // Điều chỉnh đường dẫn tới tệp JSON và xóa dấu cách trắng không mong đợi
+            Object obj = parser.parse(new FileReader("C:\\Login.json".trim()));
+            JSONObject jsonObject = (JSONObject) obj;
+            JSONArray userlogins = (JSONArray) jsonObject.get("userlogins");
+
+            // Lặp qua mỗi đối tượng JSON trong mảng userlogins
+            for (Object o : userlogins) {
+                JSONObject user = (JSONObject) o;
+                String username = (String) user.get("username");
+                String password = (String) user.get("password");
+
+                // Nhập thông tin đăng nhập từ JSON vào các trường tương ứng trên trang web
+                driver.findElement(By.id("username")).clear();
+                driver.findElement(By.id("username")).sendKeys(username);
+                Thread.sleep(2000); // Đợi 2 giây để chắc chắn rằng trường username đã được điền
+                driver.findElement(By.id("password")).clear();
+                driver.findElement(By.id("password")).sendKeys(password);
+                Thread.sleep(2000); // Đợi 2 giây để chắc chắn rằng trường password đã được điền
+
+                // Nhấp nút đăng nhập
+                driver.findElement(By.id("btnSubmit")).click();
+                Thread.sleep(2000); // Đợi 2 giây để chờ trang web phản hồi
+
+                // Kiểm tra đăng nhập thành công
+                String currentURL = driver.getCurrentUrl();
+                if (currentURL.equals("http://didoshop.vn/")) {
+                    System.out.println("Đăng nhập thành công với email: " + username + " và password: " + password);
+                    // Đăng xuất sau khi đăng nhập thành công (đối với mục đích demo, có thể không cần thiết)
+                    driver.get("http://didoshop.vn/logout");
+                } else {
+                    System.out.println("Đăng nhập thất bại với email: " + username + " và password: " + password);
+                }
+
+                // Quay lại trang đăng nhập để thử các tài khoản tiếp theo
+                driver.get("http://didoshop.vn/user/signin");
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng trình duyệt
+            driver.quit();
+        }
+    }
+}

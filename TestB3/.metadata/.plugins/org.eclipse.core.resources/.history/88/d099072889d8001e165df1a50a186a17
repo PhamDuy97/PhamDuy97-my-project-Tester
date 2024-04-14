@@ -1,0 +1,87 @@
+package TestNG;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.DataProvider;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+
+public class DocFileExel {
+    WebDriver driver; // Khai báo biến driver
+
+    @Test(dataProvider = "dp")
+    public void f(String email, String password, String thirdParameter) {
+        driver.navigate().to("http://didoshop.vn/user/signin");
+
+        driver.findElement(By.id("username")).sendKeys(email);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.id("btnSubmit")).click();
+
+        // Thực hiện hành động tiếp theo sau khi nhập password
+    }
+
+    @BeforeMethod
+    public void beforeMethod() {
+        System.out.print("Bắt đầu");
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        driver.quit();
+    }
+
+    @DataProvider(name = "dp")
+    public Object[][] dp() {
+    	Object[][] arrObj = getExelData("C:\\Users\\pduy1\\OneDrive\\Máy tính\\paramentTim.xlsx", "Data");
+        return arrObj;
+        
+    }
+
+    private Object[][] getExelData(String fileName, String sheetName) {
+        String[][] data = null;
+
+        try (FileInputStream fis = new FileInputStream(fileName);
+				XSSFWorkbook workbook = new XSSFWorkbook(fis)) { // Sử dụng AutoCloseable
+            XSSFSheet sheet = workbook.getSheet(sheetName);
+
+            if (sheet == null) {
+                throw new RuntimeException("Sheet không tồn tại!");
+            }
+
+            XSSFRow row = sheet.getRow(0);
+            int soDong = sheet.getPhysicalNumberOfRows();
+            int soCot = row.getLastCellNum();
+
+            XSSFCell cell;
+            data = new String[soDong - 1][soCot];
+
+            for (int i = 1; i < soDong; i++) {
+                for (int j = 0; j < soCot; j++) {
+                    row = sheet.getRow(i);
+                    cell = row.getCell(j);
+                    if (cell != null) {
+                        data[i - 1][j] = cell.getStringCellValue();
+                    } else {
+                        data[i - 1][j] = ""; // Xử lý ô trống
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Lỗi đọc file Excel: " + e.getMessage());
+        }
+        return data;
+    }
+}

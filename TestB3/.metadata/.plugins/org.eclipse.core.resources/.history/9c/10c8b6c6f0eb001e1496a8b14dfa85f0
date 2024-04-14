@@ -1,0 +1,13 @@
+package BaiTH8;
+
+import org.testng.annotations.Test;
+
+public class Cau2 {
+	@Test
+
+	public void read(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,33 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class DangNhapThanhCong {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.navigate().to("http://didoshop.vn/");
+		
+		// Nhấp nút đăng nhập
+		driver.findElement(By.className("btnSignin")).click();
+        
+		driver.findElement(By.id("username")).sendKeys("phamdyyuu0907@gmail.com");
+		Thread.sleep(2000);
+		driver.findElement(By.id("password")).sendKeys("phamduy0907");
+		Thread.sleep(2000);
+		// Nhấp nút đăng nhập
+        driver.findElement(By.id("btnSubmit")).click();
+		
+     // Kiểm tra đăng nhập thành công
+        if (driver.findElement(By.id("user-profile")).isDisplayed()) {
+            System.out.println("Đăng nhập thành công!");
+        } else {
+            System.out.println("Đăng nhập thất bại!");
+        }
+    }
+}

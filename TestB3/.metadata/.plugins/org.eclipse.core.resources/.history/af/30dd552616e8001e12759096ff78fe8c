@@ -1,0 +1,89 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DangNhapThanhCong {
+
+    public static void main(String[] args) throws InterruptedException {
+        // Thiết lập đường dẫn của trình duyệt Chrome
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+
+        // Khởi tạo trình duyệt Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Mở cửa sổ trình duyệt và phóng to toàn màn hình
+        driver.manage().window().maximize();
+
+        // Mở trang web
+        driver.get("http://didoshop.vn/");
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.className("btnSignin")).click();
+
+        // Nhập thông tin đăng nhập
+        driver.findElement(By.id("username")).sendKeys("phamdyyuu0907@gmail.com");
+        Thread.sleep(2000);
+        driver.findElement(By.id("password")).sendKeys("phamduy0907");
+        Thread.sleep(2000);
+
+        // Nhấp nút đăng nhập
+        driver.findElement(By.id("btnSubmit")).click();
+
+        // Kiểm tra đăng nhập thành công
+        String currentURL = driver.getCurrentUrl();
+        if (currentURL.equals("http://didoshop.vn/")) {
+            System.out.println("Đăng nhập thành công!");
+            
+         // Lấy phần tử chứa thông tin đăng nhập thành công
+            WebElement actualSignup = driver.findElement(By.xpath("//p[contains(text(), 'Xin chào, Phạm Hoàng Duy')]"));
+
+            // Kiểm tra kết quả mong đợi
+            List<String> actual_result = new ArrayList<>();
+            actual_result.add("Đăng nhập thành công");
+            List<String> expect_result = new ArrayList<>();
+            expect_result.add("Đăng nhập thành công");
+
+            // So sánh với kết quả mong đợi
+            String actualText = "Xin chào, Phạm Hoàng Duy"; //  thông tin hiển thị sau khi đăng nhập thành công là "Xin chào, Phạm Hoàng Duy"
+            if (actualText.contains("Xin chào, Phạm Hoàng Duy")) {
+                System.out.println("Thông tin đăng nhập thành công chính xác!");
+
+                // Kiểm tra kết quả
+                if (actual_result.contains("Đăng nhập thành công")) {
+                    System.out.println("Kết quả mong đợi: Đăng nhập thành công");
+                } else {
+                    System.out.println("Kết quả mong đợi: Đăng nhập thất bại");
+                }
+            } else {
+                System.out.println("Thông tin đăng nhập không chính xác!");
+
+                // Kiểm tra kết quả
+                if (actual_result.contains("Đăng nhập thành công")) {
+                    System.out.println("Kết quả mong đợi: Đăng nhập thành công");
+                } else {
+                    System.out.println("Kết quả mong đợi: Đăng nhập thất bại");
+                }
+            }
+            if((expect_result).equals(actual_result)) {
+    			System.out.println("Ket qua thuc te dung voi mong doi");	
+    		}
+    		else {
+    			System.out.println("Ket qua thuc te khac key qua mong doi");
+
+    			System.out.println("Ket qua mong doi:"+ expect_result.toString());
+    			System.out.println("Ket qua thuc te:"+ actual_result.toString());
+    		}
+        } else {
+            System.out.println("Đăng nhập thất bại!");
+        }
+
+        // Đóng trình duyệt
+        driver.quit();
+    }
+}

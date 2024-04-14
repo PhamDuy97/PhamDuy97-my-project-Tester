@@ -1,0 +1,51 @@
+package DangNhap;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Thao4 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.navigate().to("http://didoshop.vn/");
+		 // Nhập từ khóa tìm kiếm
+        String searchKeyword = "Selenium Testing";
+        WebElement searchBox = driver.findElement(By.cssSelector("input[name='q']"));
+        searchBox.sendKeys(searchKeyword);
+        searchBox.sendKeys(Keys.RETURN);
+
+        // Chờ 3 giây để trang tìm kiếm được tải
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Kiểm tra kết quả tìm kiếm
+        List<WebElement> searchResults = driver.findElements(By.cssSelector("h3"));
+        boolean keywordFound = false;
+        for (WebElement result : searchResults) {
+            if (result.getText().toLowerCase().contains(searchKeyword.toLowerCase())) {
+                keywordFound = true;
+                break;
+            }
+        }
+
+        // In thông báo tương ứng
+        if (keywordFound) {
+            System.out.println("Từ khóa '" + searchKeyword + "' xuất hiện trong kết quả.");
+        } else {
+            System.out.println("Từ khóa '" + searchKeyword + "' không xuất hiện trong kết quả.");
+        }
+
+        // Đóng trình duyệt
+        driver.quit();
+    }
+}

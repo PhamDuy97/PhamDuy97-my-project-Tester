@@ -1,0 +1,36 @@
+package DangNhap;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class DangNhapThieuEmail {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.navigate().to("http://didoshop.vn/");
+ 
+		// Nhấp nút đăng nhập
+		driver.findElement(By.className("btnSignin")).click();
+     
+		// Thay thế email hợp lệ bằng chuỗi rỗng
+		driver.findElement(By.id("username")).sendKeys("");
+		Thread.sleep(2000);
+		driver.findElement(By.id("password")).sendKeys("phamduy0907");
+		Thread.sleep(2000);
+		// Nhấp nút đăng nhập
+    driver.findElement(By.id("btnSubmit")).click();
+ 
+		// Kiểm tra lỗi email trống
+    if (driver.findElement(By.className("errors")).getText().contains("Email không được để trống")) {
+      System.out.println("Đăng nhập thất bại với email trống!");
+    } else {
+      System.out.println("Đăng nhập thành công!");
+    }
+
+    // Đóng trình duyệt
+    driver.quit();
+  }
+}

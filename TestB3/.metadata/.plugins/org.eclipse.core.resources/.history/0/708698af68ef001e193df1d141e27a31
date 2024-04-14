@@ -1,0 +1,9 @@
+package DangNhap;
+
+import org.testng.annotations.Test;
+
+public class DocJSon {
+  @Test
+  public void f() {
+  }
+}

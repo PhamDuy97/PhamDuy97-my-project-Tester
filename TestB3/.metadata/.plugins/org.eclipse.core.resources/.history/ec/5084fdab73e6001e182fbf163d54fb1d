@@ -1,0 +1,44 @@
+package BaiTH7;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Baitap2 {
+	public static XSSFRow row;
+	
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		FileInputStream fis = new FileInputStream("C:\\HK2-N3\\TestWeek7.xlsx");
+		XSSFWorkbook book = new XSSFWorkbook(fis);
+		XSSFSheet sheet1 = book.getSheet("Week7");
+		
+		String[][] dulieu = new String[][] { { "Facebook", "Google", "Zalo", "Văn Lang","IG"},
+			{"Tường An", "Phương Trang", "Nguyên Thảo", "Hoàng Duy", "Trung Tính"},
+			{"Pledis", "SM", "YG", "JYP", "Hybe"},
+			{"Chenny", "Mouchanqse", "Pé Thảo", "Dy Phạm", "Tôi là Tính"},
+			{"CNTT28", "MAR29", "CNTT20", "CNTT25", "CNTT26"},
+			{"CHENNY","TRANG", "THẢO", "DUY", "TÍNH"}};
+		
+		for (int dong=0; dong< dulieu.length;dong++) {
+			row= sheet1.createRow(dong);
+
+			for (int i=0; i< dulieu[dong].length;i++) {
+				XSSFCell cell= row.createCell(i);
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(dulieu[dong][i].toString());
+			}
+		}
+		FileOutputStream fos = new FileOutputStream("C:\\HK2-N3\\TestWeek7.xlsx");
+		book.write(fos);
+		book.close();
+		fos.close();
+	}
+
+}

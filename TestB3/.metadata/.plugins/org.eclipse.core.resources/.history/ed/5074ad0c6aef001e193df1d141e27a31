@@ -1,0 +1,70 @@
+package BaiTH8;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class Cau1 {
+
+    WebDriver driver;
+
+    @Test(dataProvider = "dp")
+    public void Login(String email, String password) throws InterruptedException {
+        driver.get("https://admin-demo.nopcommerce.com/");
+        driver.findElement(By.id("Email")).clear();
+        driver.findElement(By.id("Email")).sendKeys(email);
+        Thread.sleep(1000);
+        driver.findElement(By.id("Password")).clear();
+        driver.findElement(By.id("Password")).sendKeys(password);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[normalize-space()='Log in']")).click();
+        String act_title = driver.getTitle();
+        String exp_title = "Your store. Login";
+        Thread.sleep(1000);
+        AssertJUnit.assertEquals(act_title, exp_title);
+
+    }
+
+    @DataProvider(name = "dp")
+    public static Object[][] readJson() throws IOException, org.json.simple.parser.ParseException {
+        JSONParser jsonparser = new JSONParser();
+
+        FileReader reader = new FileReader("D:\\KTDD_Thực Hành\\testdata.json");
+        Object obj = jsonparser.parse(reader);
+        JSONObject userloginsJsonobj = (JSONObject) obj;
+        JSONArray userloginArray = (JSONArray) userloginsJsonobj.get("userlogins");
+        Object[][] data = new Object[userloginArray.size()][2];
+        for (int i = 0; i < userloginArray.size(); i++) {
+            JSONObject users = (JSONObject) userloginArray.get(i);
+            String email = (String) users.get("email");
+            String password = (String) users.get("password");
+            data[i][0] = email;
+            data[i][1] = password;
+        }
+        return data;
+    }
+
+    @BeforeClass
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
+    }
+
+}

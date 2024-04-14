@@ -1,0 +1,78 @@
+package DangNhap;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.List;
+
+public class Thao4 {
+
+    public static void main(String[] args) throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.navigate().to("http://didoshop.vn/");
+        
+        // Trường hợp đúng: Sử dụng từ khóa xuất hiện trong kết quả tìm kiếm của trang web
+        String correctKeyword = "Áo thun";
+        
+        // Nhập từ khóa vào ô tìm kiếm
+        WebElement searchBox = driver.findElement(By.cssSelector("input[name='q']"));
+        searchBox.sendKeys(correctKeyword);
+        searchBox.sendKeys(Keys.RETURN);
+
+        // Chờ 3 giây để trang tìm kiếm được tải
+        Thread.sleep(3000);
+
+        // Kiểm tra kết quả tìm kiếm
+        List<WebElement> searchResults = driver.findElements(By.cssSelector("h3"));
+        boolean keywordFound = false;
+        for (WebElement result : searchResults) {
+            if (result.getText().toLowerCase().contains(correctKeyword.toLowerCase())) {
+                keywordFound = true;
+                break;
+            }
+        }
+
+        // In thông báo tương ứng
+        if (keywordFound) {
+            System.out.println("Trường hợp đúng: Từ khóa '" + correctKeyword + "' xuất hiện trong kết quả tìm kiếm.");
+        } else {
+            System.out.println("Trường hợp đúng: Từ khóa '" + correctKeyword + "' không xuất hiện trong kết quả tìm kiếm.");
+        }
+
+        // Trường hợp sai: Sử dụng từ khóa không xuất hiện trong kết quả tìm kiếm của trang web
+        String incorrectKeyword = "Xe hơi";
+        
+        // Nhập từ khóa vào ô tìm kiếm
+        searchBox.clear(); // Xóa từ khóa trước đó
+        searchBox.sendKeys(incorrectKeyword);
+        searchBox.sendKeys(Keys.RETURN);
+
+        // Chờ 3 giây để trang tìm kiếm được tải
+        Thread.sleep(3000);
+
+        // Kiểm tra kết quả tìm kiếm
+        searchResults = driver.findElements(By.cssSelector("h3"));
+        keywordFound = false;
+        for (WebElement result : searchResults) {
+            if (result.getText().toLowerCase().contains(incorrectKeyword.toLowerCase())) {
+                keywordFound = true;
+                break;
+            }
+        }
+
+        // In thông báo tương ứng
+        if (keywordFound) {
+            System.out.println("Trường hợp sai: Từ khóa '" + incorrectKeyword + "' xuất hiện trong kết quả tìm kiếm.");
+        } else {
+        	System.out.println("Trường hợp sai: Từ khóa '" + incorrectKeyword + "' không xuất hiện trong kết quả tìm kiếm.");
+        }
+
+        // Đóng trình duyệt
+        driver.quit();
+    }
+}

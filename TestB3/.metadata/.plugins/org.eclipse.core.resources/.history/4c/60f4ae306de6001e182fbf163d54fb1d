@@ -1,0 +1,41 @@
+package BaiTH7;
+
+import java.io.IOException;
+
+import com.gargoylesoftware.htmlunit.javascript.host.file.FileReader;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.steadystate.css.parser.ParseException;
+
+import groovy.json.JsonParser;
+
+public class BaiTap3 {
+
+	public void ReadFromJson()throws IOException, ParseException {
+		// TODO Auto-generated method stub
+		FileReader reader = new FileReader("C:\\Users\\pduy1\\OneDrive\\Máy tính\\employee.json");
+		
+		JSONParser jsonparser = new JSONParser();
+		
+		Object obj = jsonparser.parse(reader);
+		
+		JSONObject empjsonobj = (JSONObject) obj;
+		
+		String fname= (String) empjsonobj.get("fristName");
+		String lname= (String) empjsonobj.get("lastName");
+		System.out.println("First Name:"+ fname );
+		System.out.println("Last Name:"+ lname );
+
+		JsonArray array = (JSONArray) empjsonobj.get("address");
+		for (int=0; i< array.size(); i++);
+			JSONObject address= (JSONObject) array.get(i);
+			String street= (String) address.get("street");
+			String city= (String) address.get("city");
+			String province= (String) address.get("province");
+			
+			System.out.println("Address of"+i+"is..." );
+			System.out.println("Street:"+ street );
+			System.out.println("City:"+ city );
+			System.out.println("Province:"+ province );
+	}
+}

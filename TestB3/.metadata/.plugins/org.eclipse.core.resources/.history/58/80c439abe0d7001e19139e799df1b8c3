@@ -1,0 +1,39 @@
+package DangNhap;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Thao {
+
+	public static void main(String[] args) throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.navigate().to("http://didoshop.vn/");
+
+        // Nhập từ khóa tìm kiếm
+        String searchKeyword = "Selenium testing";
+        driver.findElement(By.cssSelector("input[name='q']")).sendKeys(searchKeyword);
+
+        // Nhấn Enter để thực hiện tìm kiếm
+        driver.findElement(By.cssSelector("input[name='q']")).sendKeys(Keys.RETURN);
+
+        // Chờ 3 giây để trang tìm kiếm được tải
+        Thread.sleep(3000);
+
+        // Kiểm tra xem kết quả có chứa từ khóa "Selenium testing" không
+        if (!driver.getTitle().contains(searchKeyword)) {
+            throw new AssertionError("Kết quả tìm kiếm không chứa từ khóa '" + searchKeyword + "'");
+        } else {
+            System.out.println("Kết quả tìm kiếm chứa từ khóa '" + searchKeyword + "'");
+        }
+
+        // In URL của trang kết quả
+        System.out.println("URL của trang kết quả: " + driver.getCurrentUrl());
+
+        // Đóng trình duyệt
+        driver.close();
+    }
+}

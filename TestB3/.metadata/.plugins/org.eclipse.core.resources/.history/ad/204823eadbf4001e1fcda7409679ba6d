@@ -1,0 +1,49 @@
+package Dangky;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterMethod;
+
+public class pom_Test1 {
+	private WebDriver driver;
+    private POM_Signup signup;
+  @Test  
+  //Nhập dữ liệu kiểm thử trường hợp Đăng nhập Thành công
+  
+  public void testRegister() throws InterruptedException {
+	driver.findElement(By.className("btnSignin")).click();
+	
+
+    signup.enterEmail("phamdyyuu0907@gmail.com");
+    signup.enterPassword("phamduy0907");
+    
+    
+    driver.findElement(By.id("btnSubmit")).click();
+    Thread.sleep(2000);
+    
+ // Kiểm tra xem dòng thông báo chào mừng người dùng có hiển thị hay không
+    String welcomeMessage = driver.findElement(By.className("userName")).getText();
+    if (welcomeMessage.contains("Xin chào, Phạm Hoàng Duy")) {
+        System.out.println("Đăng nhập thành công!");
+    } else {
+        System.out.println("Đăng nhập không thành công!");
+    }
+}
+  
+  @BeforeMethod
+  public void setUp() {
+      System.setProperty("webdriver.chrome.driver", "C:\\KoDau\\chromedriver.exe");
+      driver = new ChromeDriver();
+      signup = new POM_Signup(driver); 
+      driver.get("http://didoshop.vn/");
+  }
+
+  @AfterMethod
+  public void tearDown() {
+      driver.quit();
+  }
+}
+
